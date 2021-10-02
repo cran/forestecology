@@ -43,7 +43,9 @@ growth_ex <-
       filter(!str_detect(codes, "R")) %>% 
       mutate(sp = to_any_case(sp) %>% factor()),
     id = "ID"
-  )
+  ) %>% 
+  # Compute basal area:
+  mutate(basal_area = 0.0001 * pi * (dbh1 / 2)^2)
 
 ## -----------------------------------------------------------------------------
 # Set competitor distance
@@ -91,7 +93,7 @@ base_plot +
 
 ## -----------------------------------------------------------------------------
 focal_vs_comp_ex <- growth_ex %>%
-  create_focal_vs_comp(comp_dist, blocks = blocks_ex, id = "ID")
+  create_focal_vs_comp(comp_dist, blocks = blocks_ex, id = "ID", comp_x_var = "basal_area")
 focal_vs_comp_ex
 
 ## -----------------------------------------------------------------------------
